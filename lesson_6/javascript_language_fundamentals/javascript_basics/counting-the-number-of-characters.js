@@ -1,5 +1,6 @@
 var phrase = prompt('Please write a phrase:');
-var numberOfCharacters = phrase.replace();
+// var numberOfCharacters = phrase.replace(/\s/g, '').length;
+var numberOfCharacters = phrase.replace(/[^a-z]/gi, '').length;
 
 console.log('There are ' + numberOfCharacters + ' characters in "' + phrase + '".');
 
