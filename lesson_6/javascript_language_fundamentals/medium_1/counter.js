@@ -43,9 +43,10 @@ console.log('The total value is ' + (counter * rate));
 // With regards to function declaration. The key thing to note is that it is similar to variable declaration.
 // A function declaration creates a variable with its name being the name of the function. 
 
-// For hoisting, remember that a function declara
+// For hoisting, remember that a function declaration gets moved together with its body; while for variables,
+// only the variable declaration part gets moved.
 
-// Finally, while both function adn variable declarations are hoisted, it is functions that are hoisted first
+// Finally, while both function and variable declarations are hoisted, it is functions that are hoisted first
 // with the succeeding variable declaration with a similar name (i.e. counter) considered as duplicate.
 
 // After hoisting, the code snippets become the following:
@@ -59,7 +60,7 @@ console.log('The total value is ' + (counter * rate));
 // counter = 5;
 // rate = 3;
 
-// console.log('The total value is ' + (counter * rate));
+// console.log('The total value is ' + (counter * rate)); // The total value is 15
 
 // got the right answer but when I visualized it I should've moved all declarations to the top, even if they occured
 // at the same time, as was the case with rate.
