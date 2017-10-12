@@ -29,14 +29,6 @@ var newReleases = [
     'rating': [5.0],
     'bookmark': [{ id:432534, time:65876586 }],
   },
-  {
-    'id': 0,
-    'title': 'Fart',
-    'boxart': 'http://cdn-0.nflximg.com/images/2891/Fracture.jpg',
-    'uri': 'http://api.netflix.com/catalog/titles/movies/70111470',
-    'rating': [5.0],
-    'bookmark': [{ id:432534, time:65876586 }],
-  },
 ];
 
 function processReleaseData(data) {
