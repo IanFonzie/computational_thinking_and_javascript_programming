@@ -12,7 +12,7 @@
 
 // each row is a string of asterisks prepended by spaces
 // the 5 rows will have 1 3 5 3 1 asterisks
-// the 5 row swill have 2 0 1 0 1 2 spaces prepended
+// the 5 row swill have 2 1 0 1 2 spaces prepended
 
 // Given the above, we can come up with a general model, for a diamond of size n:
 // each row is a string of asterisks, prepended by spaces
@@ -27,3 +27,40 @@
 // diamond(3)   * 
 // 						 ***
 // 							*
+
+// start with a single asterisk, that's your first line
+// *
+// then progressively ad asterisks in increments of two
+// determine the number of spaces by subtracting the diamondDimensions - the currentCountOfAsterisks / 2
+// now we have: two sets of spaces and one of asterisks
+
+// if (diamondDimensions < 1) {
+// 	console.log('');
+// 	return;
+// }
+
+// for i = 1 to diamondDimensions, increment by 1
+// 	spaces are diamondDimensions - asterisks / 2
+// 	build each row by setting the string to string.concat
+
+function diamond(diamondDimensions) {
+	var asteriskCount = 1;
+	var reverse = false;
+	var row;
+	for (var i = 1; i <= diamondDimensions; i += 1) {
+		row = buildDiamondRow(diamondDimensions, asteriskCount);
+		console.log(row);
+		if (asteriskCount === diamondDimensions) {
+			reverse = true;
+		} 
+
+		asteriskCount = reverse ? asteriskCount - 2 : asteriskCount + 2; 
+	}
+}
+
+function buildDiamondRow(rowLength, asterisks) {
+	var spaceCount = (rowLength - asterisks) / 2;
+	var asteriskString = '*'.repeat(asterisks);
+	var spaceString = ' '.repeat(spaceCount);
+	return spaceString + asteriskString + spaceString;
+}
