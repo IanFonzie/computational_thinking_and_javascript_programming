@@ -1,0 +1,311 @@
+input: 
+	-	two version number strings
+		- separated by 0 or more periods
+		- ends with one or more digits
+output: 
+	- number that is 1, -1, or 0
+		- null if string contains any number character that is not a . or digit.
+examples:
+	compareVersions('0.1', '1') // -1
+	compareVersions('1', '1.0') // 0
+	compareVersions('1.0', '1.1') // -1
+	compareVersions('1.1', '1.2') // -1
+	compareVersions('1.2', '1.2.0.0') // 0
+	compareVersions('1.2.0.0', '1.18.2') // -1
+	compareVersions('1.18.2', '13.37') // -1
+	compareVersions('2.0', '1.0') // 1
+	compareVersions('2', '1.0') // 1
+	compareVersions('2.1', '2.0') // 1
+	compareVersions('2.1.0', '2.0') // 1
+	compareVersions('2,1,0', '2.0') // null
+	compareVersions('2.1.0', '2!0') // mull
+data structure:
+	- input: array of characters, separated by `.`s
+	- output: 1, -1, 0 or null
+algorithm:
+	- Check that either version string doesn't contain any characters other than . or digits
+	- I'm going to split both string numbers into arrays of characters separated by periods
+	- if one array is larger than an another, append arrayLarger.length - arraySmaller.length 0s to arraySmaller. 
+	- For each element in both arrays, I will compare the element at the first array's current index to
+	the element at the second array's current index.
+		- if the element in the first array is larger than the second, I return 1. 
+		- if the element in the first array is smaller than the second, I return -1.
+		- Otherwise I continue to the next iteration
+	- return 0 if we reach the end of the array.
+
+UNDERSTAND PROBLEM AND REQUIREMENTS (1)
+
+break down and understand the problem, then clarify the requirements:
+
+Input and Output
+	- Input: two version numbers in string representation, version1 and version2
+	- Output: one of the numbers from 1, 0 and -1 or null for invalid inputs.
+
+Definition and Rules
+	Rules are demonstrated with examples. Need to examine the examples to infer the specific
+	rules for comparing version numbers.
+
+	- if any inputs contain invalid characters, return `null`
+		- any characters other than digits and `.` are considered invalid.
+	-compare the two input versions
+		- if input version1 > version2, return `1`
+		- if input version1 < version2, return `-1`
+		- if input version1 === version2, return `0`
+
+	works on a high level, but we need to break it down further. We didn't get explicit rules from the description,
+	but we did get examples. use these examples to deduce the explicit rules that we canuse for the solution.
+
+	0.1 < 1 = 1.0 < 1.1.3 < 1.1.4 < 1.2 = 1.2.0.0 < 1.17.2 < 13.37
+
+	Do not skip this step! Without a strong mental model of the requirements, there's no clarity about the algorithm
+	we need to use. Without a clear end-to-end algorithm, there's no direction on how we can write code. If we jump to
+	coding right away, we're essentially trying to work on all 3 levels of requirements, algorithm and programming at once.
+
+	After this is done, come up with concrete RULES for comparing versions. A good mindset: How would you explain to a non-technical person the rules for comparing two numbers? Emphasize non-technical language because this portion is about interpreting the requirements and not
+	coming up with a solution.
+
+	My attempt at explaining to a non technical person: So bob, I want you to sort versions here. To do that look at the version number components (The numbers separated by periods) one at a time. If the versions don't have the same number of components just add `.0` to the shorter version until they have the same number of components.  If the current component of the first version number is bigger than the second version then just write down 1 and stop what you're doing. If the current component of the first version is smaller than the second version, write down -1 and stop what you're doing. If they are the same, move on to the next component and repeat the process. If you get to the end of the version numbers without having found a difference, write down 0.
+
+	Breakdown:
+	- look at the version number component for each version
+	- if one version has more components, add `.0`s onto the smaller one until they're the same length.
+	- If the current component of the first version is bigger than the current component of the second, write down 1 and stop.
+	- If the current component of the first version is smaller than the current component of the second, write down -1 and stop.
+	- If they're the same, move to the next component and repeat the process. (next implies iterable?)
+	- If you get to the end of the list and all the numbers are the same, write down 0
+
+UNDERSTAND PROBLEM AND REQUIREMENTS (2)
+
+work through the exaple by hand and generalize it. We'll use 2.3.4 and 2.3.5 as an example:
+
+1. starting from the first number, we compare the number parts that make up each version.
+
+v
+2.3.4
+2.3.5
+^
+
+if the first number is larger, then the first version number is larger. if the second number is larger, then the first version is smaller.
+In this case the numbers are the same. This means we'll need to move on to the next number part in each version and compare those values.
+
+2. The next number is also the same, so we'll again continue to the next one.
+
+  v
+2.3.4
+2.3.5
+| ^
+|
+same
+
+3. The third number within each version is different. Can make a determination using the rules mentioned in step #1. Since the number in the first version is smaller than the number in in the second second version, the first version number is considered smaller.
+
+    v
+2.3.4
+2.3.5
+| | ^
+| |
+| same
+same
+
+4. We can now conclude that the first version number si smaller than the second version number.
+
+I'm basically just coming up with the rules. we initially came up with broad rules about how to compare the two versions and what they should return. In this section we expanded on the exact rules needed to perform a comparison.
+
+	- if any inputs contain invalid characters, return `null`
+		- any characters other than digits and `.` are considered invalid.
+	-compare the two input versions
+		- if input version1 > version2, return `1`
+		- if input version1 < version2, return `-1`
+		- if input version1 === version2, return `0`
+	- The rules to compare two version numbers
+		- start from the left most part of the two version numbers (had this)
+		- If the number part of the first version number is larger, then the first version number is larger (basically had this)
+		- If the number part of the second version number is larger, then the first version number is smaller (basically had this)
+		- If the number parts of both versions are the same, move to the next number part of the two version numbers (I told people to loop back to step 3, maybe wouldn't be that clear)
+			- do the same comparison and decide which version number is larger
+			- keep moving to the right until the result of the comparison is determined
+			- if we get to the last nubmer part of the two version numbers and they're equal,
+			then the two version numbers are equal.
+
+Identify Examples / Test Cases
+
+A test case is an example of how some code can be used. Test cases have a combination of the input values that the problem accepts, and the desired solution (or output) we wish to determine with our solution.
+
+1 is equal to 1
+1.1 is greater than 1.0
+2.3.4 is less than 2.3.5
+
+we need edge cases our solution should handle. Edge cases are special input cases that may require special handling. Invalid inputs we want to handle gracefully, or just other cases that we must consider.
+
+I had a bit of trouble with my edge cases, because I wasn't concerning myself with invalid input. Need to think more about cases that aren't as obvious. Here's what they came up with:
+
+1.a is not a valid version 				// we only want to deal with numbers and dots
+.1 and 1. are not valid versions 		// versions must only begin and end with a number
+1..0 is not a valid version 			// dots can only appear between two numbers
+1.0 and 1.0.0 are equal to 1 			// zeros can be inferred but are not always shown
+1.0.0 is less than 1.1 					// can handle version numbers with different lengths (number of components greater in version 1)
+1.0 is less than 1.0.5					// can handle version numbers with different lengths (number of components greater in version 2)
+
+
+These test cases will guide us through the rest of the steps, seving as our guide and giving us concrete examples to use
+to verify our work.
+
+Formal test cases:
+console.log(compareVersions('1', '1'));          // 0
+console.log(compareVersions('1.1', '1.0'));      // 1
+console.log(compareVersions('2.3.4', '2.3.5'));  // -1
+console.log(compareVersions('1.a', '1'));        // null
+console.log(compareVersions('.1', '1'));         // null
+console.log(compareVersions('1.', '2'));         // null
+console.log(compareVersions('1..0', '2.0'));     // null
+console.log(compareVersions('1.0', '1.0.0'));    // 0
+console.log(compareVersions('1.0.0', '1.1'));    // -1
+console.log(compareVersions('1.0', '1.0.5'));    // -1
+
+Use Test Cases to Understand the Requirements
+
+Initial set of rules was too specific (2.3.4 < 2.3.5). This won't work for all of our test cases:
+
+compareVersions(`1.0`, `1.0.0`);    // 0
+compareVersions(`1.0.0`, `1.1`);    // -1
+compareVersions(`1.0`, `1.0.5`);    // -1
+
+Use Test Cases to Generalize Requirement Analysis
+
+The test cases give us a more complete view of expected behaviors. Since our current focus is too narrow, we need to generalize our requirement break down to include version numbers with different lengths.
+
+The key insight comes from the fact that trailing parts of zeros don't change a version number's value. Can pad numbers with zeros, like I did. For example, after we compare the 0 parts in 1.0 and 1.0.5, we'd pad 1.0 to 1.0.0 and use it to compare with 1.0.5. From this we can conclude that the first version number is smaller.
+
+New Requirements:
+
+- if any inputs contain invalid characters, return `null`
+	- any characters other than digits and `.` are considered invalid.
+-compare the two input versions
+	- if input version1 > version2, return `1`
+	- if input version1 < version2, return `-1`
+	- if input version1 === version2, return `0`
+- The rules to compare two version numbers
+	- start from the left most part of the two version numbers (had this)
+	- If the number part of the first version number is larger, then the first version number is larger (basically had this)
+	- If the number part of the second version number is larger, then the first version number is smaller (basically had this)
+	- If the number parts of both versions are the same, move to the next number part of the two version numbers (I told people to loop back to step 3, maybe wouldn't be that clear)
+		- do the same comparison and decide which version number is larger
+		- keep moving to the right until the result of the comparison is determined
+			- If we reach the end of only one number, pad that number with a 0 part.
+		- if we get to the last number part of the two version numbers and they're equal,
+		then the two version numbers are equal.
+
+Q: How much effort should I put into "Understanding the Problem"? Some are obvious; can I skip this step for those?
+
+A: The bulk of "Understanding the Problem" involves translating the problem description to a set of specific and explicit definitions and rules. Therefore, how much effort we expend here depends on the problem's complexity. We also need to consider whether the requirements are already given in explicit "technical terms", or whether the requirements are merely demonstrated, expressed in higher "problem domain" terms, or use implied knowledge that we must capture.
+
+if you extrapolate this process to larger projects, this is similar to the phase where a business analyst translates "business needs" to "technical requirements" so that they can be implemented by technical teams.
+
+Q: I feel that I don't know where to start to break down problems. Think too much in terms of the solution instead of the problem.
+
+A: Capture inputs and outputs first. Then focus on the two key aspects of tthe problem description: "Definitions" and "Rules", are there key concepts that need to be more clearly defined? are there implied rules that need to be made explicit?
+
+Q: Why is it important to construct the examples before we work through the algorithm or code?
+A: Test cases give us runnable code that we can use to verify that we have successfully solved the problem. This is especially true when the problem has non-trivial requirements. A set of test cases lets us determine which requirements our solutin fails to satisfy; this is valuable feedback that will help us debug and fix the errors.
+
+Test cases also force us to fully understand the requirements. The process of coming up with inputs and predicting outputs makes us go back to the requirements, and ensure that the definitions and rules are clear. if we can't build test cases, then something is missing from our requirement break down, which means we don't fully undersatnd the problem
+
+In a technical interviewer, after you've built test cases you can ask the interviewer for confirmation and get valuable feedback.
+
+Q: How do I come up with good test cases?
+
+- Input types
+	- Can the function handle different types of inputs, such as numbers, strings, booleans, and objects?
+
+- Special values
+	- If the input is a string, does it work with an empty string ( "" )?
+	- If the input is a number, does it work with zero, negative numbers, or fractional numbers such as 0.567?
+	- If the input is an array, does it work with an empty array?
+
+- Valid / Invalid inputs
+	- What should we consider as invalid inputs, and what should we do with the? For example, if the input is going to be a word, can we assume that the string contains only letters and no other characters? Should we return null if the input isn't a valid word?
+
+- Cover the requirements we captured in the previous step as much as possible
+	- Make sure we cover both the generic cases and the special cases listed in the requirements.
+	- Look for the word if in your requirement break down. Conditional requirements require test cases that cover both sides to have full coverage.
+
+Work with Data Structure and Algorithm
+
+Data Structure Choices
+
+How do we represent data so that we can best utilize the built-in methods of the programming language (JavaSCript)
+
+Reading through the requirements break down from the previous step, we can see that the key operations are:
+
+- iterate through the version numbers, part by part
+- compare part numbers
+
+if we prepare our data in an array of numbers data structure, both operations will be easy to express.
+
+Algorithms
+
+Our goal is to:
+- convert the input data into our data structure of choice
+- express steps to produce outputs, using methods and abstractions available on the data structure.
+
+Here's what we come up with:
+- return null if the inputs contain any characters other than digits and dots
+- split the input numbers into parts as arrays of integers
+- loop through the two version numbers' parts
+	- for each step, access onepart from each version number
+	- if one version number runs out of parts, use 0
+	- compare the two parts
+		- if part1 < part2
+			- return -1
+		- if part1 > part2
+			- return 1
+		- if part1 === part2
+			- we move to the next part of parts
+- when we reach the end of the loop, return 0
+
+The algorithm is a close translation of the requirements breakdown, but uses language that is much closer to JavaScript so that it will be easy to trasnlate to code.
+
+See comparing-version-numbers-ls.js for their solution.
+
+Run Test Cases to Verify and Debug Code
+
+based on the code in comparing-version-numbers-ls.js, all of the following should pass:
+
+console.log(compareVersions('1', '1'));          // 0
+console.log(compareVersions('1.1', '1.0'));      // 1
+console.log(compareVersions('2.3.4', '2.3.5'));  // -1
+console.log(compareVersions('1.a', '1'));        // null
+console.log(compareVersions('.1', '1'));         // null
+console.log(compareVersions('1.', '2'));         // null
+console.log(compareVersions('1..0', '2.0'));     // null
+console.log(compareVersions('1.0', '1.0.0'));    // 0
+console.log(compareVersions('1.0.0', '1.1'));    // -1
+console.log(compareVersions('1.0', '1.0.5'));    // -1
+
+except for the last one. WHy isn't it doing what we expect? Need to inspect the inputs to see how these differ from the other test cases that do work.
+
+function compareVersions(versionA, versionB) {
+  // ...
+
+  for (i = 0; i < aParts.length; i += 1) {
+
+    // ...
+
+IN the for loop, we use the number parts in the first version number to determine how many times we should loop. In the test case comparing 1.0 to 1.0.5 though, the second version number is longer than the first. This means that our code compares the first two parts fromt he two version numbers; since they are equal, we exit the loop without ever checking the third part ( 5 ). This explains why the function erroneously returns 0.
+
+Need to ensure that we loop for each value in the LONGEST version number, like so:
+
+function compareVersions(versionA, versionB) {
+
+  // ...
+
+  maxLength = Math.max(aParts.length, bParts.length);
+
+  // ...
+
+  for (i = 0; i < maxLength; i += 1) {
+
+    // ...
+
+see comparing-version-numbers-ls.js for the updated code.
+
