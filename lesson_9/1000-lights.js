@@ -1,5 +1,26 @@
 function lightsOn(switches) {
-  // ..
+	var lights = constructLightsObject(switches);
+	
+	Object.keys(lights).forEach(function(light) {
+		var current = Number(light);
+		var increment = current;
+		for (var i = current; i <= switches; i += increment) {
+			lights[i] = !lights[i];
+		}
+	});
+
+	return Object.keys(lights).filter(function(light){
+		return lights[light];
+	}).map(Number);
+}
+
+function constructLightsObject(numSwitches) {
+	var lightsObject = {}
+	for (var i = 1; i <= numSwitches; i += 1) {
+		lightsObject[i] = false;
+	}
+
+	return lightsObject;
 }
 
 lightsOn(5);   // [1, 4];
@@ -12,6 +33,12 @@ lightsOn(5);   // [1, 4];
 // Round 5: lights 2, 3, and 5 are now off; 1 and 4 are on
 
 lightsOn(100);  // [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+console.log(lightsOn(-1)) // []
+console.log(lightsOn(0)) // []
+console.log(lightsOn(1)) // [1]
+console.log(lightsOn(5)) // [1, 4]
+console.log(lightsOn(100)) // [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 /*
 
@@ -42,14 +69,17 @@ console.log(lightsOn(100)) // [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 Data Structure:
 	- Prepare our data as an object whose keys are number strings and whose values are initialized to false
+		- use a for loop to generate a sequence of n (Number of Switches) numbers in an array
+		- forEach element in the array, create an entry in an object where the key is the number n and its value is the boolean false
+
+Algorithm:
 	- Steps needed to produce outputs (array of lights that are turned on)
-		- declare an object with n (Number of Switches) elements, whose keys are the 
-		strings from 1 to n and initialized to false.
-		- for each property in this object, iterate the number string keys in increments of current index.
-		- toggle the boolean when you reach one of the increments
-		
+		- for each property in this object, 
+			- iterate the number string keys in increments of current index.
+			- toggle the boolean when you reach one of the increments
+		- after toggling the elements, filter by property === true
 	
-Algorithm
+
 
 assuming we have 5 switches:
 
@@ -85,3 +115,5 @@ transformation
 reducing
 interrogation
 sort
+
+*/
