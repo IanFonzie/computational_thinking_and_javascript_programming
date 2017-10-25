@@ -80,8 +80,8 @@ Data Structure:
 
 - string of characters
 
-- to convert the input data to our datastructure, we use the current index and diamond count to determine how many characters
-need to be added to the string
+- to convert the input data to our data structure, we use the current index, starCount and diamondDimensions
+to determine how many characters need to be added to the string
 
 Algorithm:
 set start = 1
@@ -96,7 +96,7 @@ for start - diamondDimension rows:
 		- when reverse flag is set, decrement the starCount by 2
 
 
-assuming we have diamondDimensions of 3:
+assuming we have diamondDimensions of 5:
 
 The grid will be 5 x 5:
 - The first row will have 2 ` `s, 1 `*`, followed by 2 ` `s
