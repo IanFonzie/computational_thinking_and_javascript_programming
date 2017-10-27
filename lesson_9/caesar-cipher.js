@@ -1,17 +1,8 @@
-var ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
-
 function caesarEncrypt(plaintext, key) {
 	var charArray = plaintext.split('');
 	var encrypted = charArray.map(function(char) {
 		if (/[A-Za-z]/.test(char)) {
-			var shifted
-			var upper = char === char.toUpperCase();
-			var formattedChar = upper ? char.toLowerCase() : char;
-			shifted = ALPHABET.indexOf(formattedChar) + key;
-			if (shifted > ALPHABET.length - 1) {
-				shifted %= ALPHABET.length;
-			}
-			return upper ? ALPHABET[shifted].toUpperCase() : ALPHABET[shifted];
+			return shiftCharacter(char, key);
 		} else {
 			return char;
 		}
@@ -20,22 +11,44 @@ function caesarEncrypt(plaintext, key) {
 	return encrypted.join('');
 }
 
+function shiftCharacter(character, key) {
+	var upper = character === character.toUpperCase();
+	var formattedChar = upper ? character.toLowerCase() : character;
+	var shiftedChar = shift(formattedChar, key);
+	if (upper) {
+		shiftedChar = shiftedChar.toUpperCase();
+	}
+
+	return shiftedChar;
+}
+
+function shift(character, key) {
+	var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+	
+	var shifted = alphabet.indexOf(character) + key;
+	if (shifted > alphabet.length - 1) {
+		shifted %= alphabet.length;
+	}
+
+	return alphabet[shifted];
+}
+
 // Simple shift
-caesarEncrypt('A', 0);       // 'A'
-caesarEncrypt('A', 3);       // 'D'
+console.log(caesarEncrypt('A', 0));       // 'A'
+console.log(caesarEncrypt('A', 3));       // 'D'
 
 // Wrap around
-caesarEncrypt('y', 5);       // 'd'
-caesarEncrypt('a', 47);      // 'v'
+console.log(caesarEncrypt('y', 5));       // 'd'
+console.log(caesarEncrypt('a', 47));      // 'v'
 
 // All letters
-caesarEncrypt('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 25);
+console.log(caesarEncrypt('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 25));
 // ZABCDEFGHIJKLMNOPQRSTUVWXY
-caesarEncrypt('The quick brown fox jumps over the lazy dog!', 5);
+console.log(caesarEncrypt('The quick brown fox jumps over the lazy dog!', 5));
 // Ymj vznhp gwtbs ktc ozrux tajw ymj qfed itl!
 
 // Many non-letters
-caesarEncrypt('There are, as you can see, many punctuations. Right?; Wrong?', 2);
+console.log(caesarEncrypt('There are, as you can see, many punctuations. Right?; Wrong?', 2));
 // Vjgtg ctg, cu aqw ecp ugg, ocpa rwpevwcvkqpu. Tkijv?; Ytqpi?
 
 /*
