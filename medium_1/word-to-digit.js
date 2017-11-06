@@ -26,18 +26,11 @@ function wordToDigit(inputString) {
 
 	var regex = new RegExp(/(zero|one|two|three|four|five|six|seven|eight|nine)/, 'gi');
 	return inputString.replace(regex, function(capturingGroup) {
-		return words[captureGroup.toLowerCase()];
+		return words[capturingGroup.toLowerCase()];
 	});
 }
 
 console.log(wordToDigit('Please call me at five five five one two three four. Thanks.'));
 
 // Please call me at five five five one two three four. Thanks.
-// Please call me at 5 five five one two three four. Thanks
-// Please call me at 5 5 five one two three four. Thanks
-// Please call me at 5 5 5 one two three four. Thanks
-// Please call me at 5 5 5 1 two three four. Thanks
-// Please call me at 5 5 5 1 2 three four. Thanks
-// Please call me at 5 5 5 1 2 3 four. Thanks
-// Please call me at 5 5 5 1 2 3 4. Thanks
-
+// Please call me at 5 5 5 1 2 3 4. Thanks.
