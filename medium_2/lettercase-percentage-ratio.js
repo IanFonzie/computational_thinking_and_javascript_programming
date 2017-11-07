@@ -1,3 +1,39 @@
+function letterPercentages(inputString) {
+	var percentages = {};
+	var totalCount = inputString.length;
+	var upperCount = inputString.match(/[A-Z]/g) ? inputString.match(/[A-Z]/g).length : 0;
+	var lowerCount = inputString.match(/[a-z]/g) ? inputString.match(/[a-z]/g).length : 0;
+	var neitherCount = inputString.match(/[^A-Za-z]/g) ? inputString.match(/[^A-Za-z]/g).length : 0;
+
+	percentages['lowercase'] = determinePercentage(lowerCount, totalCount);
+	percentages['uppercase'] = determinePercentage(upperCount, totalCount);
+	percentages['neither'] = determinePercentage(neitherCount, totalCount);
+
+	return percentages;
+}
+
+function determinePercentage(count, total) {
+	return (count / total * 100).toFixed(2);
+}
+
+console.log(letterPercentages('abCdef 123'));
+// { lowercase: "50.00", uppercase: "10.00", neither: "40.00" }
+
+console.log(letterPercentages('AbCd +Ef'));
+// { lowercase: "37.50", uppercase: "37.50", neither: "25.00" }
+
+console.log(letterPercentages('123'));
+// { lowercase: "0.00", uppercase: "0.00", neither: "100.00" }
+
+console.log(letterPercentages('a'));
+// { lowercase: "100.00", uppercase: "0.00", neither: "0.00" }
+
+console.log(letterPercentages('A'));
+// { lowercase: "0.00", uppercase: "100.00", neither: "0.00" }
+
+console.log(letterPercentages('aA1'));
+// { lowercase: "33.33", uppercase: "33.33", neither: "33.33" }
+
 /*
 
 input: String with upper and lowercase characters as well as other non-alphabetical characters.
@@ -55,39 +91,3 @@ algorithm:
 return percentages
 
 */
-
-function letterPercentages(inputString) {
-	var percentages = {};
-	var totalCount = inputString.length;
-	var upperCount = inputString.match(/[A-Z]/g) ? inputString.match(/[A-Z]/g).length : 0;
-	var lowerCount = inputString.match(/[a-z]/g) ? inputString.match(/[a-z]/g).length : 0;
-	var neitherCount = inputString.match(/[^A-Za-z]/g) ? inputString.match(/[^A-Za-z]/g).length : 0;
-
-	percentages['lowercase'] = determinePercentage(lowerCount, totalCount);
-	percentages['uppercase'] = determinePercentage(upperCount, totalCount);
-	percentages['neither'] = determinePercentage(neitherCount, totalCount);
-
-	return percentages;
-}
-
-function determinePercentage(count, total) {
-	return (count / total * 100).toFixed(2);
-}
-
-console.log(letterPercentages('abCdef 123'));
-// { lowercase: "50.00", uppercase: "10.00", neither: "40.00" }
-
-console.log(letterPercentages('AbCd +Ef'));
-// { lowercase: "37.50", uppercase: "37.50", neither: "25.00" }
-
-console.log(letterPercentages('123'));
-// { lowercase: "0.00", uppercase: "0.00", neither: "100.00" }
-
-console.log(letterPercentages('a'));
-// { lowercase: "100.00", uppercase: "0.00", neither: "0.00" }
-
-console.log(letterPercentages('A'));
-// { lowercase: "0.00", uppercase: "100.00", neither: "0.00" }
-
-console.log(letterPercentages('aA1'));
-// { lowercase: "33.33", uppercase: "33.33", neither: "33.33" }

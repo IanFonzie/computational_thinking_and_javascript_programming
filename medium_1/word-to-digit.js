@@ -1,15 +1,3 @@
-// input: string with number words in input
-// output: string with punctuation preserved and number words replaced with digit characters
-
-// definitions:
-// - replace every number word in a sentence with its equivalent digit character
-
-// rules:
-// (will work through an example below.)
-// - if the string matches any of the number words:
-// 	- replace the instance of the word with its character equivalent
-// 		- look up the string in an object and use its corresponding value
-
 function wordToDigit(inputString) {
 	var words = {
 		'zero': 	0,
@@ -32,5 +20,21 @@ function wordToDigit(inputString) {
 
 console.log(wordToDigit('Please call me at five five five one two three four. Thanks.'));
 
-// Please call me at five five five one two three four. Thanks.
-// Please call me at 5 5 5 1 2 3 4. Thanks.
+/*
+
+input: string with number words in input
+output: string with punctuation preserved and number words replaced with digit characters
+
+definitions:
+- replace every number word in a sentence with its equivalent digit character
+
+rules:
+(will work through an example below.)
+- if the string matches any of the number words:
+	- replace the instance of the word with its character equivalent
+		- look up the string in an object and use its corresponding value
+
+Please call me at five five five one two three four. Thanks.
+Please call me at 5 5 5 1 2 3 4. Thanks.
+
+*/

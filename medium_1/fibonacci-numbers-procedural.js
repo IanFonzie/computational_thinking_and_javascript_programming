@@ -1,3 +1,33 @@
+function fibonacci(nth) {
+	var firstPrevious;
+	var secondPrevious;
+	var result;
+	
+	if (nth <= 2) {
+		return 1;
+	}
+
+	firstPrevious = 1;
+	secondPrevious = 1;
+	for (var i = 2; i < nth; i += 1) {
+		result = firstPrevious + secondPrevious;
+		firstPrevious = secondPrevious;
+		secondPrevious = result;
+	}
+
+	return result;
+}
+
+console.log(fibonacci(1));       // 1
+console.log(fibonacci(2));       // 1
+console.log(fibonacci(3));       // 2
+console.log(fibonacci(4));       // 3
+console.log(fibonacci(5));       // 5
+console.log(fibonacci(12));      // 144
+console.log(fibonacci(20));      // 6765
+console.log(fibonacci(20));      // 6765
+console.log(fibonacci(50));      // 12586269025
+console.log(fibonacci(100));     // 354224848179261915075
 
 /*
 
@@ -44,34 +74,3 @@ return the result
 	return result
 	
 */
-
-function fibonacci(nth) {
-	var firstPrevious;
-	var secondPrevious;
-	var result;
-	
-	if (nth <= 2) {
-		return 1;
-	}
-
-	firstPrevious = 1;
-	secondPrevious = 1;
-	for (var i = 2; i < nth; i += 1) {
-		result = firstPrevious + secondPrevious;
-		firstPrevious = secondPrevious;
-		secondPrevious = result;
-	}
-
-	return result;
-}
-
-console.log(fibonacci(1));       // 1
-console.log(fibonacci(2));       // 1
-console.log(fibonacci(3));       // 2
-console.log(fibonacci(4));       // 3
-console.log(fibonacci(5));       // 5
-console.log(fibonacci(12));      // 144
-console.log(fibonacci(20));      // 6765
-console.log(fibonacci(20));      // 6765
-console.log(fibonacci(50));      // 12586269025
-console.log(fibonacci(100));     // 354224848179261915075
